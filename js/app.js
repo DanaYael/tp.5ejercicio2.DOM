@@ -109,13 +109,14 @@ function DatosObtenidos(e) {
   );
 
   // Mostrar todo en un solo alert
-  alert(mensaje);
 
   const mensaje = `
   ${nuevaPersona.esMayorDeEdad()}
   ${nuevaPersona.mostrarGeneraciones()}
   ${nuevaPersona.mostrarDatos()}
   `;
+
+  alert(mensaje);
 }
 
 document
