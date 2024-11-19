@@ -1,22 +1,21 @@
 class Persona {
-  constructor(nombre, sexo, DNI, edad, peso, altura, anioNacimento) {
+  constructor(nombre, sexo, DNI, edad, peso, altura, anioNacimiento) {
     this.nombre = nombre;
     this.sexo = sexo;
     this.DNI = DNI;
     this.edad = edad;
     this.peso = peso;
     this.altura = altura;
-    this.anioNacimento = anioNacimento;
+    this.anioNacimiento = anioNacimiento;
   }
 
   esMayorDeEdad() {
     if (isNaN(this.edad)) {
-      return "ingrese un numero valido";
+      return "Ingrese un número válido.";
     } else if (this.edad >= 18) {
-      return "eres mayor de edad";
-    } else {
-      return "eres menor de edad";
+      return "Eres mayor de edad.";
     }
+    return "Eres menor de edad.";
   }
 
   static generaciones = {
@@ -63,24 +62,27 @@ class Persona {
       Edad: ${this.edad}
       DNI: ${this.DNI}
       Sexo: ${this.sexo}
-      Peso: ${this.peso} 
-      Altura: ${this.altura} 
+      Peso: ${this.peso}
+      Altura: ${this.altura}
       Año de Nacimiento: ${this.anioNacimiento}
-     `;
+    `;
   }
 
   mostrarGeneraciones() {
-    for (let [generacion, datos] of Object.entries(Persona.generaciones))
+    for (let [generacion, datos] of Object.entries(Persona.generaciones)) {
       if (
-        this.anioNacimento >= datos.inicio &&
-        this.anioNacimento <= datos.fin
+        this.anioNacimiento >= datos.inicio &&
+        this.anioNacimiento <= datos.fin
       ) {
-        return `Pertenece a la generacion : ${generacion} cuyo rasgo caracteritico es ${datos.rasgo}`;
-      } else {
-        return "generacion no identificada";
+        return `Pertenece a la generación: ${generacion}, cuyo rasgo característico es ${datos.rasgo}.`;
       }
+    }
+    return "Generación no identificada.";
   }
 }
+
+// Variable global para almacenar la persona
+let nuevaPersona;
 
 function DatosObtenidos(e) {
   e.preventDefault();
@@ -92,33 +94,62 @@ function DatosObtenidos(e) {
   const edad = parseInt(document.getElementById("edad").value, 10);
   const peso = parseFloat(document.getElementById("peso").value);
   const altura = parseInt(document.getElementById("altura").value, 10);
-  const anioNacimento = parseInt(
+  const anioNacimiento = parseInt(
     document.getElementById("anioNacimiento").value,
     10
   );
 
+  // Validar entradas
+  if (
+    !nombre ||
+    isNaN(edad) ||
+    isNaN(peso) ||
+    isNaN(altura) ||
+    isNaN(anioNacimiento)
+  ) {
+    alert("Por favor, completa todos los campos correctamente.");
+    return;
+  }
+
   // Crear una nueva instancia de Persona
-  const nuevaPersona = new Persona(
+  nuevaPersona = new Persona(
     nombre,
     sexo,
     DNI,
     edad,
     peso,
     altura,
-    anioNacimento
+    anioNacimiento
   );
 
   // Mostrar todo en un solo alert
-
-  const mensaje = `
-  ${nuevaPersona.esMayorDeEdad()}
-  ${nuevaPersona.mostrarGeneraciones()}
-  ${nuevaPersona.mostrarDatos()}
-  `;
-
-  alert(mensaje);
+  alert(nuevaPersona.mostrarDatos());
 }
 
+function mostrarGeneracion() {
+  if (nuevaPersona) {
+    alert(nuevaPersona.mostrarGeneraciones());
+  } else {
+    alert("Por favor, completa el formulario primero.");
+  }
+}
+
+function mostrarMayorEdad() {
+  if (nuevaPersona) {
+    alert(nuevaPersona.esMayorDeEdad());
+  } else {
+    alert("Por favor, completa el formulario primero.");
+  }
+}
+
+// Agregar event listeners
 document
   .getElementById("personaForm")
   .addEventListener("submit", DatosObtenidos);
+document
+  .getElementById("btngeneracion")
+  .addEventListener("click", mostrarGeneracion);
+
+document
+  .getElementById("btnmayordeedad")
+  .addEventListener("click", mostrarMayorEdad);
